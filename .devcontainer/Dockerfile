@@ -2,13 +2,19 @@
 ARG VARIANT=3-bullseye
 FROM --platform=linux/amd64 python:3.10
 
+# Copy the requirements.txt file to the container
+COPY requirements.txt /requirements.txt
+
+# Install the packages from the requirements.txt file without caching
+RUN pip install --no-cache-dir -r /requirements.txt
+
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     # Remove imagemagick due to https://security-tracker.debian.org/tracker/CVE-2019-10131
     && apt-get purge -y imagemagick imagemagick-6-common
 
 # Temporary: Upgrade python packages due to https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-40897
 # They are installed by the base image (python) which does not have the patch.
-RUN python3 -m pip install --upgrade setuptools
+RUN python -m pip install --upgrade setuptools
 
 # Install Chrome for web browsing
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
@@ -26,3 +32,4 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 # [Optional] Uncomment this line to install global node packages.
 # RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
+# RUN pip install -r /app/requirements.txt

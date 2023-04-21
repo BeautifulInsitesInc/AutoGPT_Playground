@@ -1,4 +1,7 @@
 {
+  "name": "AutoGPT Playground",
+  "dockerFile": "Dockerfile",
+  "context": "..",
   "build": {
     "dockerfile": "./Dockerfile",
     "context": "."

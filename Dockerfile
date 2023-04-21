@@ -1,5 +1,11 @@
 # Use an official Python base image from the Docker Hub
-FROM python:3.10-slim
+FROM python:3.10
+
+# Copy the requirements.txt file to the container
+COPY requirements.txt /requirements.txt
+
+# Install the packages from the requirements.txt file without caching
+RUN pip install --no-cache-dir -r /requirements.txt
 
 # Install git
 RUN apt-get -y update
